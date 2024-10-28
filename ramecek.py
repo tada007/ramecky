@@ -21,7 +21,7 @@ uploaded_files = st.file_uploader(
 
 # Logo hinzufügen (fest vorgegeben)
 add_logo = st.checkbox('Přidat logo_1')
-add_logo2 = st.checkout('Přidat logo_2 (zatím nefunkční)')
+add_logo2 = st.checkbox('Přidat logo_2 (zatím nefunkční)')
 
 # Schieberegler für die Logo-Größe (wird nur angezeigt, wenn die Checkbox aktiviert ist)
 logo_percentage = 10
