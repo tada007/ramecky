@@ -25,7 +25,7 @@ add_logo2 = st.checkbox('Přidat logo_2 (zatím nefunkční)')
 
 # Schieberegler für die Logo-Größe (wird nur angezeigt, wenn die Checkbox aktiviert ist)
 logo_percentage = 10
-if add_logo:
+if add_logo or add_logo2:
     logo_percentage = st.slider('Velikost loga', min_value=5, max_value=30, value=10)
 
 def add_split_frame(image, logo=None, logo_percentage=10):
