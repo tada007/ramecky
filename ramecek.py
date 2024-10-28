@@ -20,16 +20,20 @@ uploaded_files = st.file_uploader(
 )
 
 # Logo hinzufügen (fest vorgegeben)
-add_logo = st.checkbox('Přidat logo_1')
-add_logo2 = st.checkbox('Přidat logo_2 (zatím nefunkční)')
+checked = False
+add_logo = st.checkbox('Přidat logo_1', value=checked)
+checked2 = False
+add_logo2 = st.checkbox('Přidat logo_2 (zatím nefunkční)', value=checked2)
 
 # Schieberegler für die Logo-Größe (wird nur angezeigt, wenn die Checkbox aktiviert ist)
 logo_percentage = 10
 if add_logo:
-    st.session_state['add_logo2'] = False
+    checked2 = False
+    st.experimental_rerun()
     logo_percentage = st.slider('Velikost loga', min_value=5, max_value=30, value=10)
 if add_logo2:
-    st.session_state['add_logo'] = False
+    checked = False
+    st.experimental_rerun()
     logo_percentage = st.slider('Velikost loga', min_value=5, max_value=30, value=10)
 def add_split_frame(image, logo=None, logo_percentage=10):
     border_size = 8
