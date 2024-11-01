@@ -25,6 +25,8 @@ st.header("Nahrajte obrázky")
 uploaded_files = st.file_uploader(
     "Vyberte obrázky", accept_multiple_files=True
 )
+# Standardwert für `selected_logo` festlegen
+selected_logo = None  # Kein Logo ausgewählt
 
 # Auswahl des Logos mit Vorschaubildern
 st.write("### Wählen Sie ein Logo:")
@@ -37,17 +39,6 @@ with col2:
     if st.button("Logo 2 auswählen"):
         selected_logo = logo_pfad2
         st.image(logo2_preview, caption="Logo 2")
-
-# Schieberegler für die Logo-Größe
-logo_percentage = st.slider('Logo-Größe (in % des Bildes)', min_value=5, max_value=30, value=10)
-
-# Logo-Position als Dropdown-Menü
-logo_position = st.selectbox(
-    "Position des Logos",
-    ["Oben links", "Oben mitte", "Oben rechts", 
-     "Mitte links", "Mitte mitte", "Mitte rechts", 
-     "Unten links", "Unten mitte", "Unten rechts"]
-)
 
 # Funktion für das Hinzufügen des Rahmens und des Logos
 def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Unten rechts"):
@@ -70,13 +61,13 @@ def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Un
     # Füge das Originalbild in die Mitte des neuen Bildes ein
     new_image.paste(image, (border_size, border_size))
 
-    # Logo hinzufügen, falls vorhanden
+    # Logo hinzufügen, falls ein gültiger Logo-Pfad angegeben ist
     if logo_path:
         try:
             logo = Image.open(logo_path).convert("RGBA")  # Konvertiere das Logo in RGBA
             logo_width, logo_height = logo.size
 
-            # Skalieren des Logos proportional, basierend auf dem kleineren Wert von Breite oder Höhe des Originalbildes
+            # Skalieren des Logos proportional
             scale_factor = min(width, height) * (logo_percentage / 100)
             aspect_ratio = logo_width / logo_height
             new_logo_width = int(scale_factor * aspect_ratio)
