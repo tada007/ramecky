@@ -11,7 +11,7 @@ if not os.path.exists(output_ordner):
 
 # Pfade zu den Logos
 logo_pfad1 = r"Logo_De Wit.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem ersten Logo
-logo_pfad2 = r"Logo_Donauchem_více než 30 let.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem zweiten Logo
+logo_pfad2 = r"Logo_Donauchem_více než 30 let.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem zweiten Logo
 
 # Lade Logos für die Vorschau
 logo1_preview = Image.open(logo_pfad1).resize((50, 50))
