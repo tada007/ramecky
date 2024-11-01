@@ -10,8 +10,8 @@ if not os.path.exists(output_ordner):
     os.makedirs(output_ordner)
 
 # Pfade zu den Logos
-logo_pfad1 = r"Logo_De Wit.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem ersten Logo
-logo_pfad2 = r"Logo_Donauchem_více než 30 let.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem zweiten Logo
+logo_pfad1 = r"Logo1.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem ersten Logo
+logo_pfad2 = r"Logo2.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem zweiten Logo
 
 # Lade Logos für die Vorschau
 logo1_preview = Image.open(logo_pfad1).resize((50, 50))
@@ -41,30 +41,13 @@ with col2:
 # Schieberegler für die Logo-Größe
 logo_percentage = st.slider('Logo-Größe (in % des Bildes)', min_value=5, max_value=30, value=10)
 
-# Logo-Position als Gitter
-st.write("### Position des Logos:")
-col1, col2, col3 = st.columns(3)
-with col1:
-    if st.button("Oben links"):
-        logo_position = "Oben links"
-    if st.button("Mitte links"):
-        logo_position = "Mitte links"
-    if st.button("Unten links"):
-        logo_position = "Unten links"
-with col2:
-    if st.button("Oben mitte"):
-        logo_position = "Oben mitte"
-    if st.button("Mitte mitte"):
-        logo_position = "Mitte mitte"
-    if st.button("Unten mitte"):
-        logo_position = "Unten mitte"
-with col3:
-    if st.button("Oben rechts"):
-        logo_position = "Oben rechts"
-    if st.button("Mitte rechts"):
-        logo_position = "Mitte rechts"
-    if st.button("Unten rechts"):
-        logo_position = "Unten rechts"
+# Logo-Position als Dropdown-Menü
+logo_position = st.selectbox(
+    "Position des Logos",
+    ["Oben links", "Oben mitte", "Oben rechts", 
+     "Mitte links", "Mitte mitte", "Mitte rechts", 
+     "Unten links", "Unten mitte", "Unten rechts"]
+)
 
 # Funktion für das Hinzufügen des Rahmens und des Logos
 def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Unten rechts"):
