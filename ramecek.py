@@ -13,26 +13,60 @@ if not os.path.exists(output_ordner):
 logo_pfad1 = r"Logo1.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem ersten Logo
 logo_pfad2 = r"Logo2.png"  # Ersetze dies mit dem tatsächlichen Pfad zu deinem zweiten Logo
 
-st.title("Generátor fotorámečků")
+# Lade Logos für die Vorschau
+logo1_preview = Image.open(logo_pfad1).resize((50, 50))
+logo2_preview = Image.open(logo_pfad2).resize((50, 50))
 
+st.title("Generátor fotorámečků")
+st.write("---")  # Horizontale Linie für die Trennung
+
+# Bild-Upload
 st.header("Nahrajte obrázky")
 uploaded_files = st.file_uploader(
     "Vyberte obrázky", accept_multiple_files=True
 )
 
-# Auswahl des Logos und die Position des Logos
-selected_logo = st.radio("Wählen Sie ein Logo:", ("Logo 1", "Logo 2"))
-logo_pfad = logo_pfad1 if selected_logo == "Logo 1" else logo_pfad2
+# Auswahl des Logos mit Vorschaubildern
+st.write("### Wählen Sie ein Logo:")
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("Logo 1 auswählen"):
+        selected_logo = logo_pfad1
+        st.image(logo1_preview, caption="Logo 1")
+with col2:
+    if st.button("Logo 2 auswählen"):
+        selected_logo = logo_pfad2
+        st.image(logo2_preview, caption="Logo 2")
 
-# Schieberegler für die Logo-Größe (wird nur angezeigt, wenn die Checkbox aktiviert ist)
-logo_percentage = st.slider('Velikost loga', min_value=5, max_value=30, value=10)
+# Schieberegler für die Logo-Größe
+logo_percentage = st.slider('Logo-Größe (in % des Bildes)', min_value=5, max_value=30, value=10)
 
-# Logo-Position auswählen
-logo_position = st.selectbox(
-    "Position des Logos:",
-    ["Oben links", "Oben mitte", "Oben rechts", "Mitte links", "Mitte rechts", "Unten links", "Unten mitte", "Unten rechts"]
-)
+# Logo-Position als Gitter
+st.write("### Position des Logos:")
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button("Oben links"):
+        logo_position = "Oben links"
+    if st.button("Mitte links"):
+        logo_position = "Mitte links"
+    if st.button("Unten links"):
+        logo_position = "Unten links"
+with col2:
+    if st.button("Oben mitte"):
+        logo_position = "Oben mitte"
+    if st.button("Mitte mitte"):
+        logo_position = "Mitte mitte"
+    if st.button("Unten mitte"):
+        logo_position = "Unten mitte"
+with col3:
+    if st.button("Oben rechts"):
+        logo_position = "Oben rechts"
+    if st.button("Mitte rechts"):
+        logo_position = "Mitte rechts"
+    if st.button("Unten rechts"):
+        logo_position = "Unten rechts"
 
+# Funktion für das Hinzufügen des Rahmens und des Logos
 def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Unten rechts"):
     border_size = 8
     width, height = image.size
@@ -73,6 +107,7 @@ def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Un
                 "Oben mitte": ((new_width - logo.width) // 2, border_size),
                 "Oben rechts": (new_width - logo.width - border_size, border_size),
                 "Mitte links": (border_size, (new_height - logo.height) // 2),
+                "Mitte mitte": ((new_width - logo.width) // 2, (new_height - logo.height) // 2),
                 "Mitte rechts": (new_width - logo.width - border_size, (new_height - logo.height) // 2),
                 "Unten links": (border_size, new_height - logo.height - border_size),
                 "Unten mitte": ((new_width - logo.width) // 2, new_height - logo.height - border_size),
@@ -88,11 +123,12 @@ def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Un
 
     return new_image
 
+# Button zum Bearbeiten und Speichern der Bilder
 if st.button("Upravit obrázky"):
     if uploaded_files:
         for uploaded_file in uploaded_files:
             image = Image.open(uploaded_file)
-            image_with_frame = add_split_frame(image, logo_pfad, logo_percentage, logo_position)  # Logo hinzufügen, wenn ausgewählt
+            image_with_frame = add_split_frame(image, selected_logo, logo_percentage, logo_position)
 
             # Bild im Speicher speichern
             img_bytes = BytesIO()
@@ -108,4 +144,3 @@ if st.button("Upravit obrázky"):
             )
     else:
         st.warning("Nejprve prosím nahrajte obrázky.")
-
