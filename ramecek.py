@@ -4,7 +4,7 @@ import streamlit as st
 from io import BytesIO
 
 # Pfad zum Ordner für die gespeicherten Bilder mit Rahmen
-output_ordner = r'\output'
+output_ordner = os.path.join(os.getcwd(), 'output')
 
 if not os.path.exists(output_ordner):
     os.makedirs(output_ordner)
@@ -22,53 +22,53 @@ st.write("---")  # Horizontale Linie für die Trennung
 
 # Bild-Upload
 st.header("Nahrajte obrázky")
-uploaded_files = st.file_uploader(
-    "Vyberte obrázky", accept_multiple_files=True
-)
-# Standardwert für `selected_logo` festlegen
+uploaded_files = st.file_uploader("Vyberte obrázky", accept_multiple_files=True)
+
+# Initialisiere Session State für ausgewählte Werte
 if "selected_logo" not in st.session_state:
     st.session_state["selected_logo"] = None
 if "logo_percentage" not in st.session_state:
     st.session_state["logo_percentage"] = 10
 if "logo_position" not in st.session_state:
-    st.session_state["logo_position"] = "Unten rechts"
+    st.session_state["logo_position"] = "Dole vpravo"
 
 # Auswahl des Logos mit Session State
-st.write("### Vyberte Logo:")
+st.write("### Vyberte logo:")
 col1, col2 = st.columns(2)
 with col1:
-    if st.button("Vybrat Logo 1"):
+    if st.button("Vybrat logo 1"):
         st.session_state["selected_logo"] = logo_pfad1
         st.image(logo1_preview, caption="Logo 1")
 with col2:
-    if st.button("Vybrat Logo 2"):
+    if st.button("Vybrat logo 2"):
         st.session_state["selected_logo"] = logo_pfad2
         st.image(logo2_preview, caption="Logo 2")
 
 # Widgets für Logo-Größe und -Position, die direkt den Session State aktualisieren
 st.session_state["logo_percentage"] = st.slider(
-    'Logo-Velikost (v % celého obrazu. 10% je standart)',
+    'Velikost loga (v % obrázku)',
     min_value=5,
     max_value=30,
     value=st.session_state["logo_percentage"]
 )
 
 st.session_state["logo_position"] = st.selectbox(
-    "Pozice Loga",
-    ["Vlevo nahoře", "Uprostřed nahoře", "Vpravo nahoře",
- "uprostřed vlevo", "uprostřed", "vpravo uprostřed",
- "Vlevo dole", "Uprostřed dole", "Vpravo dole"],
-    index=["Oben links", "Oben mitte", "Oben rechts", 
-           "Mitte links", "Mitte mitte", "Mitte rechts", 
-           "Unten links", "Unten mitte", "Unten rechts"].index(st.session_state["logo_position"])
+    "Umístění loga",
+    ["Nahoře vlevo", "Nahoře uprostřed", "Nahoře vpravo", 
+     "Uprostřed vlevo", "Uprostřed", "Uprostřed vpravo", 
+     "Dole vlevo", "Dole uprostřed", "Dole vpravo"],
+    index=["Nahoře vlevo", "Nahoře uprostřed", "Nahoře vpravo", 
+           "Uprostřed vlevo", "Uprostřed", "Uprostřed vpravo", 
+           "Dole vlevo", "Dole uprostřed", "Dole vpravo"].index(st.session_state["logo_position"])
 )
 
 # Verwende Werte aus dem Session State
 selected_logo = st.session_state["selected_logo"]
 logo_percentage = st.session_state["logo_percentage"]
 logo_position = st.session_state["logo_position"]
+
 # Funktion für das Hinzufügen des Rahmens und des Logos
-def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position=logo_position):
+def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Dole vpravo"):
     border_size = 8
     width, height = image.size
 
@@ -91,7 +91,7 @@ def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position=log
     # Logo hinzufügen, falls ein gültiger Logo-Pfad angegeben ist
     if logo_path:
         try:
-            logo = Image.open(logo_path).convert("RGBA")  # Konvertiere das Logo in RGBA
+            logo = Image.open(logo_path).convert("RGBA")
             logo_width, logo_height = logo.size
 
             # Skalieren des Logos proportional
@@ -104,23 +104,23 @@ def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position=log
 
             # Bestimmen der Position des Logos
             pos_dict = {
-                "Oben links": (border_size, border_size),
-                "Oben mitte": ((new_width - logo.width) // 2, border_size),
-                "Oben rechts": (new_width - logo.width - border_size, border_size),
-                "Mitte links": (border_size, (new_height - logo.height) // 2),
-                "Mitte mitte": ((new_width - logo.width) // 2, (new_height - logo.height) // 2),
-                "Mitte rechts": (new_width - logo.width - border_size, (new_height - logo.height) // 2),
-                "Unten links": (border_size, new_height - logo.height - border_size),
-                "Unten mitte": ((new_width - logo.width) // 2, new_height - logo.height - border_size),
-                "Unten rechts": (new_width - logo.width - border_size, new_height - logo.height - border_size),
+                "Nahoře vlevo": (border_size, border_size),
+                "Nahoře uprostřed": ((new_width - logo.width) // 2, border_size),
+                "Nahoře vpravo": (new_width - logo.width - border_size, border_size),
+                "Uprostřed vlevo": (border_size, (new_height - logo.height) // 2),
+                "Uprostřed": ((new_width - logo.width) // 2, (new_height - logo.height) // 2),
+                "Uprostřed vpravo": (new_width - logo.width - border_size, (new_height - logo.height) // 2),
+                "Dole vlevo": (border_size, new_height - logo.height - border_size),
+                "Dole uprostřed": ((new_width - logo.width) // 2, new_height - logo.height - border_size),
+                "Dole vpravo": (new_width - logo.width - border_size, new_height - logo.height - border_size),
             }
 
             position = pos_dict.get(logo_position, (new_width - logo.width - border_size, new_height - logo.height - border_size))
 
             # Füge das Logo an der gewählten Position ein
-            new_image.paste(logo, position, logo)  # Verwende das Logo als Maske
+            new_image.paste(logo, position, logo)
         except Exception as e:
-            st.error(f"Chyba při přidávání loga: {e}", "kontaktujte mě na tadeas.reindl@gmail.com ")
+            st.error(f"Chyba při přidávání loga: {e}")
 
     return new_image
 
@@ -138,10 +138,10 @@ if st.button("Upravit obrázky"):
 
             # Download-Button für jedes bearbeitete Bild
             st.download_button(
-                label=f"Download {uploaded_file.name}",
+                label=f"Stáhnout {uploaded_file.name}",
                 data=img_bytes,
-                file_name=f"framed_{uploaded_file.name}",
+                file_name=f"orámovaný_{uploaded_file.name}",
                 mime=f"image/{image.format.lower()}",
             )
     else:
-        st.warning("Nejprve prosím nahrajte obrázky.")
+        st.warning("Nahrajte prosím nejprve obrázky.")
