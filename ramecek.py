@@ -41,6 +41,12 @@ with col2:
         st.image(logo2_preview, caption="Logo 2")
 
 logo_percentage = st.slider('Logo-Größe (in % des Bildes)', min_value=5, max_value=30, value=10)
+logo_position = st.selectbox(
+    "Position des Logos",
+    ["Oben links", "Oben mitte", "Oben rechts", 
+     "Mitte links", "Mitte mitte", "Mitte rechts", 
+     "Unten links", "Unten mitte", "Unten rechts"]
+)
 # Funktion für das Hinzufügen des Rahmens und des Logos
 def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Unten rechts"):
     border_size = 8
