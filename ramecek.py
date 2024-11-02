@@ -26,19 +26,23 @@ uploaded_files = st.file_uploader(
     "Vyberte obrázky", accept_multiple_files=True
 )
 # Standardwert für `selected_logo` festlegen
-selected_logo = None  # Kein Logo ausgewählt
+if "selected_logo" not in st.session_state:
+    st.session_state["selected_logo"] = None
 
-# Auswahl des Logos mit Vorschaubildern
 st.write("### Wählen Sie ein Logo:")
 col1, col2 = st.columns(2)
 with col1:
     if st.button("Logo 1 auswählen"):
-        selected_logo = logo_pfad1
+        st.session_state["selected_logo"] = logo_pfad1
         st.image(logo1_preview, caption="Logo 1")
 with col2:
     if st.button("Logo 2 auswählen"):
-        selected_logo = logo_pfad2
+        st.session_state["selected_logo"] = logo_pfad2
         st.image(logo2_preview, caption="Logo 2")
+
+# Verwende das Logo aus dem Session State
+selected_logo = st.session_state["selected_logo"]
+
 
 logo_percentage = st.slider('Logo-Größe (in % des Bildes)', min_value=5, max_value=30, value=10)
 logo_position = st.selectbox(
