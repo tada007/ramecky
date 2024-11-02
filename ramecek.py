@@ -68,7 +68,7 @@ selected_logo = st.session_state["selected_logo"]
 logo_percentage = st.session_state["logo_percentage"]
 logo_position = st.session_state["logo_position"]
 # Funktion für das Hinzufügen des Rahmens und des Logos
-def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Unten rechts"):
+def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position=logo_position):
     border_size = 8
     width, height = image.size
 
