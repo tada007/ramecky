@@ -28,7 +28,12 @@ uploaded_files = st.file_uploader(
 # Standardwert für `selected_logo` festlegen
 if "selected_logo" not in st.session_state:
     st.session_state["selected_logo"] = None
+if "logo_percentage" not in st.session_state:
+    st.session_state["logo_percentage"] = 10
+if "logo_position" not in st.session_state:
+    st.session_state["logo_position"] = "Unten rechts"
 
+# Auswahl des Logos mit Session State
 st.write("### Wählen Sie ein Logo:")
 col1, col2 = st.columns(2)
 with col1:
@@ -40,16 +45,29 @@ with col2:
         st.session_state["selected_logo"] = logo_pfad2
         st.image(logo2_preview, caption="Logo 2")
 
-# Verwende das Logo aus dem Session State
-selected_logo = st.session_state["selected_logo"]
+# Widgets für Logo-Größe und -Position, die direkt den Session State aktualisieren
+st.session_state["logo_percentage"] = st.slider(
+    'Logo-Größe (in % des Bildes)',
+    min_value=5,
+    max_value=30,
+    value=st.session_state["logo_percentage"]
+)
 
-
-logo_percentage = st.slider('Logo-Größe (in % des Bildes)', min_value=5, max_value=30, value=10)
-logo_position = st.selectbox(
+st.session_state["logo_position"] = st.selectbox(
     "Position des Logos",
     ["Oben links", "Oben mitte", "Oben rechts", 
      "Mitte links", "Mitte mitte", "Mitte rechts", 
-     "Unten links", "Unten mitte", "Unten rechts"]
+     "Unten links", "Unten mitte", "Unten rechts"],
+    index=["Oben links", "Oben mitte", "Oben rechts", 
+           "Mitte links", "Mitte mitte", "Mitte rechts", 
+           "Unten links", "Unten mitte", "Unten rechts"].index(st.session_state["logo_position"])
+)
+
+# Verwende Werte aus dem Session State
+selected_logo = st.session_state["selected_logo"]
+logo_percentage = st.session_state["logo_percentage"]
+logo_position = st.session_state["logo_position"]
+
 )
 # Funktion für das Hinzufügen des Rahmens und des Logos
 def add_split_frame(image, logo_path=None, logo_percentage=10, logo_position="Unten rechts"):
