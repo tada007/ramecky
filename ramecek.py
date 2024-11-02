@@ -34,30 +34,30 @@ if "logo_position" not in st.session_state:
     st.session_state["logo_position"] = "Unten rechts"
 
 # Auswahl des Logos mit Session State
-st.write("### Wählen Sie ein Logo:")
+st.write("### Vyberte Logo:")
 col1, col2 = st.columns(2)
 with col1:
-    if st.button("Logo 1 auswählen"):
+    if st.button("Vybrat Logo 1"):
         st.session_state["selected_logo"] = logo_pfad1
         st.image(logo1_preview, caption="Logo 1")
 with col2:
-    if st.button("Logo 2 auswählen"):
+    if st.button("Vybrat Logo 2"):
         st.session_state["selected_logo"] = logo_pfad2
         st.image(logo2_preview, caption="Logo 2")
 
 # Widgets für Logo-Größe und -Position, die direkt den Session State aktualisieren
 st.session_state["logo_percentage"] = st.slider(
-    'Logo-Größe (in % des Bildes)',
+    'Logo-Velikost (v % celého obrazu. 10% je standart)',
     min_value=5,
     max_value=30,
     value=st.session_state["logo_percentage"]
 )
 
 st.session_state["logo_position"] = st.selectbox(
-    "Position des Logos",
-    ["Oben links", "Oben mitte", "Oben rechts", 
-     "Mitte links", "Mitte mitte", "Mitte rechts", 
-     "Unten links", "Unten mitte", "Unten rechts"],
+    "Pozice Loga",
+    ["Vlevo nahoře", "Uprostřed nahoře", "Vpravo nahoře",
+ "uprostřed vlevo", "uprostřed", "vpravo uprostřed",
+ "Vlevo dole", "Uprostřed dole", "Vpravo dole"],
     index=["Oben links", "Oben mitte", "Oben rechts", 
            "Mitte links", "Mitte mitte", "Mitte rechts", 
            "Unten links", "Unten mitte", "Unten rechts"].index(st.session_state["logo_position"])
